@@ -1,13 +1,7 @@
 "use client";
 
-import {
-  getBalance,
-  mint,
-  transfer,
-  transferFrom,
-} from "@/service/Web3Service";
+import { mint } from "@/service/Web3Service";
 import { useRouter } from "next/navigation";
-
 import { useEffect, useState } from "react";
 import { Wheel } from "react-custom-roulette";
 
@@ -50,17 +44,16 @@ export default function Rollette() {
     const escolha = verificarParOuImpar(prizeNumber);
 
     if (userSelected === escolha) {
-      setMessage("Parabéns, voce ganhou... Aguarde a transação ser concluída");
+      alert("Parabéns, voce ganhou... Aguarde a transação ser concluída");
       mint()
         .then((tx) => {
-          setMessage("Parabens você ganhou!");
+          alert("Parabens você ganhou!");
           localStorage.removeItem("play");
           setPlay(false);
+          router.push("/Roulette");
         })
         .catch((err) =>
-          setMessage(
-            "Deu ruim" + err.response ? err.response.data : err.message
-          )
+          alert("Deu ruim" + err.response ? err.response.data : err.message)
         );
     } else {
       alert("Que pena, voce perdeu");
@@ -69,21 +62,25 @@ export default function Rollette() {
     }
   }
 
-  function handlePutChips() {
-    setMessage("Transação sendo processada");
+  async function handlePutChips() {
+    // setMessage("Transação sendo processada");
+    localStorage.setItem("play", "true");
+    setPlay(true);
+    // approve()
+    // .then((tx) => console.log(tx))
+    // .catch((err) => alert(err));
+
     // transferFrom(`${localStorage.getItem("wallet")}`, 1)
+    //   .then((tx) => {
+    //   })
+    //   .catch((err) => alert(err));
+    // transfer(1)
     //   .then((tx) => {
     //     localStorage.setItem("play", "true");
     //     setPlay(true);
+    //     setMessage("");
     //   })
     //   .catch((err) => alert(err));
-    transfer(1)
-      .then((tx) => {
-        localStorage.setItem("play", "true");
-        setPlay(true);
-        setMessage("");
-      })
-      .catch((err) => alert(err));
   }
 
   useEffect(() => {

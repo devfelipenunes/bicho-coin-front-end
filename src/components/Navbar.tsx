@@ -1,6 +1,6 @@
 "use client";
 
-import { doLogin, doLogout, getBalance } from "@/service/Web3Service";
+import { balance, doLogin, doLogout } from "@/service/Web3Service";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 // import { useRouter as routerUrl } from "next/router";
@@ -38,7 +38,7 @@ export default function Navbar() {
 
   useEffect(() => {
     redirectAfterLogin(user.logged ? true : false);
-    getBalance()
+    balance()
       .then((balance) => {
         setUser({
           ...user,
